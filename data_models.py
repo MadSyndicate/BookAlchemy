@@ -28,6 +28,7 @@ class Book(db.Model):
 
     id = db.Column(db.Integer, primary_key=True, autoincrement=True)
     author_id = db.Column(db.Integer, db.ForeignKey('authors.id'))
+    author = db.relationship("Author", backref="books")
     isbn = db.Column(db.String) # for leading zeros
     title = db.Column(db.String)
     publication_year = db.Column(db.Integer)
