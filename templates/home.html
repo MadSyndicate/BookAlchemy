@@ -59,8 +59,8 @@
     <div class="book-grid">
         {% for book in books %}
             <div class="book-card">
-                <img src="https://covers.openlibrary.org/b/isbn/{{ book.isbn }}-M.jpg"
-                     onerror="this.src='static/no-cover.png'">
+                <img src="https://covers.openlibrary.org/b/isbn/{{ book.isbn }}-L.jpg?default=false"
+                    onerror="this.onerror=null; this.src='{{ url_for('static', filename='no_cover.png') }}';">
 
                 <h3>{{ book.title }}</h3>
                 <p>{{ book.author.name }}</p>
