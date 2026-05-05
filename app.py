@@ -78,6 +78,23 @@ def add_book():
     return render_template('add_book.html', authors=authors)
 
 
+@app.route('/book/<int:book_id>/delete', methods=['POST'])
+def delete_book(book_id):
+    found_book = Book.query.filter_by(id=book_id).first()
+    if found_book:
+        db.session.delete(found_book)
+        db.session.commit()
+
+        flash(f"Book '{found_book.title}' was deleted successfully from database!",
+              "success")
+
+        return redirect(url_for('home'))
+
+    flash(f"No book with id '{book_id}' was found nor deleted!",
+          "error")
+
+    return redirect(url_for('home'))
+
 @app.route('/')
 def home():
     sort = request.args.get("sort", "title")
