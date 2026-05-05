@@ -3,7 +3,7 @@ from flask import Flask, request, render_template, redirect, url_for, flash
 from datetime import datetime
 # from flask_cors import CORS
 # from flask_limiter import Limiter
-from flask_sqlalchemy import SQLAlchemy
+from sqlalchemy import or_
 from data_models import db, Author, Book
 
 app = Flask(__name__)
@@ -81,13 +81,31 @@ def add_book():
 @app.route('/')
 def home():
     sort = request.args.get("sort", "title")
+    query = request.args.get("q", "").strip()
+
+    books_query = Book.query.join(Author)
+
+    if query:
+        search = f"%{query}%"
+        books_query = books_query.filter(
+            or_(
+                Book.title.ilike(search),
+                Author.name.ilike(search)
+            )
+        )
 
     if sort == "author":
-        books = Book.query.join(Author).order_by(Author.name).all()
+        books_query = books_query.order_by(Author.name)
     else:
-        books = Book.query.order_by(Book.title).all()
+        books_query = books_query.order_by(Book.title)
 
-    return render_template('home.html', books=books, sort=sort)
+    books = books_query.all()
+
+    if query and not books:
+        flash(f"For the search input '{query}' was no matching book title or "
+              f"author name found!", "info")
+
+    return render_template('home.html', books=books, sort=sort, query=query)
 
 
 if __name__ == '__main__':

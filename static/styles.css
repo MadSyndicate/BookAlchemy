@@ -32,6 +32,19 @@ body {
     color: black;
 }
 
+.search-bar {
+    margin-bottom: 15px;
+}
+
+.search-bar input {
+    padding: 5px;
+    width: 250px;
+}
+
+.search-bar button {
+    padding: 5px 10px;
+}
+
 /* 📚 Grid */
 .book-grid {
     display: grid;
