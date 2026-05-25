@@ -64,7 +64,7 @@ def add_book():
             book_isbn_existing = Book.query.filter_by(isbn=book_isbn).first()
             if book_isbn_existing:
                 flash(f"Book with ISBN '{book_isbn}' is already "
-                      f"in database with name: {book_isbn_existing.name}", "error")
+                      f"in database with name: {book_isbn_existing.title}", "error")
                 return redirect(url_for('home'))
         book_publication_year = request.form.get('publication_year', None)
 
